@@ -22,8 +22,8 @@ app.use(express.json());
 // Configure CORS
 const corsOptions = {
     origin: '*', // Allow all origins (for development). For production, specify your domains
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    // methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    // allowedHeaders: ['Content-Type', 'Authorization']
   };
   app.use(cors(corsOptions));
 
@@ -35,7 +35,7 @@ app.use('/uploads', express.static('uploads'));
 
 
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5007;
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 

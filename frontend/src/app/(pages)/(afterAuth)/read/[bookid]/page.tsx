@@ -29,14 +29,14 @@ const Page = () => {
       useEffect(() => {
       const fetchBook = async () => {
           try {
-              const response = await fetch(`http://localhost:5000/api/books/${bookid}`);
+              const response = await fetch(`http://localhost:5007/api/books/${bookid}`);
               if (!response.ok) {
                   throw new Error('Failed to fetch book data');
               }
               const data = await response.json();
               console.log(data)
               if(data.pdf){
-                let url = 'http://localhost:5000/'+data.pdf
+                let url = 'http://localhost:5007/'+data.pdf
                 setPdfUrl(url)
               }
               setBook(data);
