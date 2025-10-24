@@ -1,5 +1,6 @@
 "use client";
 import Navbar from "@/components/Navbar";
+import Image from 'next/image';
 import React, { useEffect, useState } from "react";
 import styles from "./KindleLibrary.module.css";
 import { FaBookOpen } from "react-icons/fa";
@@ -37,7 +38,11 @@ const Page = () => {
             }
             catch (err) {
                 console.error(err);
-                setError(err.message);
+                if (err instanceof Error) {
+                    setError(err.message);
+                } else {
+                    setError('An unknown error occurred');
+                }
                 setLoading(false);
             }
         }
@@ -98,10 +103,12 @@ const Page = () => {
                                 key={book._id}
                                 className={styles.bookItem}
                             >
-                                <img
+                                <Image
                                     src={book.image}
                                     alt={book.title}
                                     className={styles.bookImage}
+                                    width={100}
+                                    height={150}
                                 />
                                 <div className={styles.bookDetails}>
                                     <h3 className={styles.bookTitle}>{book.title}</h3>

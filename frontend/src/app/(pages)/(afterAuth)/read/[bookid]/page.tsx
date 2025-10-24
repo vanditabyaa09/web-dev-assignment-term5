@@ -27,7 +27,7 @@ const Page = () => {
 
   const [book, setBook] = useState<Book | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
       useEffect(() => {
       const fetchBook = async () => {
@@ -44,11 +44,15 @@ const Page = () => {
               }
               setBook(data);
               setLoading(false);
-          } catch (err) {
-              console.error(err);
-              setError(err.message);
-              setLoading(false);
-          }
+      } catch (err) {
+        console.error(err);
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
+        }
+        setLoading(false);
+      }
       };
 
       fetchBook();

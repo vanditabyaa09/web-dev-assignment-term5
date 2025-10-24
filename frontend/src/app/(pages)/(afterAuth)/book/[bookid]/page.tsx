@@ -16,12 +16,13 @@ interface Book {
     amazonLink: string;
     pdf: string;
   }
-const page = () => {
+import Image from 'next/image';
+const Page = () => {
     const { bookid } = useParams();
     const router = useRouter()
     const [book, setBook] = useState<Book | null>(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchBook = async () => {
@@ -34,13 +35,17 @@ const page = () => {
                 setBook(data);
                 setLoading(false);
             }
-            catch(err){
-                setError(err.message);
-                setLoading(false);
-            }
+                catch (err) {
+                    if (err instanceof Error) {
+                        setError(err.message);
+                    } else {
+                        setError('An unknown error occurred');
+                    }
+                    setLoading(false);
+                }
         }
         fetchBook()
-    },[])
+    },[bookid])
 
 
     if (loading) {
@@ -50,12 +55,17 @@ const page = () => {
     if (error) {
         return <p>{error}</p>;
     }
+
+    if (!book) {
+        return <p>Book not found.</p>;
+    }
+
     return (
         <div className={styles.main}>
             <Navbar />
             <div className={styles.container}>
                 <div className={styles.imageContainer}>
-                    <img src={book.image} alt={book.title} className={styles.bookImage} />
+                    <Image src={book.image} alt={book.title} className={styles.bookImage} width={300} height={400} />
                 </div>
                 <div className={styles.details}>
                     <h1 className={styles.bookTitle}>{book.title}</h1>
@@ -69,10 +79,8 @@ const page = () => {
 
                     <button className={styles.purchaseButton}
                         onClick={() => {
-                               // add payment check here
-
-
-                                // assuming already paid
+                            // add payment check here
+                            // assuming already paid
                             router.push(`/read/${bookid}`)
                         }}
                     >Start Reading</button>
@@ -83,7 +91,7 @@ const page = () => {
             </div>
 
         </div>
-    )
+    );
 }
 
-export default page 
+export default Page
